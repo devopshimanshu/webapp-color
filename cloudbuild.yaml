@@ -11,11 +11,7 @@ steps:
   id: Push
   args:
   - 'push'
-  - 'gcr.io/${PROJECT_ID}/${REPO_NAME}:$SHORT_SHA'
-availableSecrets:
-  secretManager:
-  - versionName: projects/1062152154421/secrets/github-token-devopshimanshu
-    env: GH_TOKEN 
+  - 'gcr.io/${PROJECT_ID}/${REPO_NAME}:$SHORT_SHA' 
 # This step clones the hello-cloudbuild-env repository
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Clone gtops repository
@@ -49,3 +45,7 @@ availableSecrets:
       git add  ./deployment/deployment.yaml && \
       git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
       git push origin main
+availableSecrets:
+  secretManager:
+  - versionName: projects/1062152154421/secrets/github-token-devopshimanshu
+    env: GH_TOKEN
