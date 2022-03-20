@@ -20,10 +20,14 @@ steps:
   args:
     - '-c'
     - |
-      git clone https://github.com/devopshimanshu/webapp-color-gitops && \
+      git clone https://$${GH_TOKEN}@github.com/devopshimanshu/webapp-color-gitops.git && \
       cd webapp-color-gitops && \
       git config user.email "cloud.himanshu2022@gmail.com"
-
+    secretEnv: ['GH_TOKEN']
+availableSecrets:
+  secretManager:
+  - versionName: projects/1062152154421/secrets/github-token-devopshimanshu
+    env: GH_TOKEN    
 #This step generates the new manifest
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Update Image SHORT_SHA
@@ -42,7 +46,6 @@ steps:
     - |
       set -x && \
       cd webapp-color-gitops && \
-      git remote add origin https://github.com/devopshimanshu/webapp-color-gitops && \
       git add  ./deployment/deployment.yaml && \
       git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
       git push origin main
