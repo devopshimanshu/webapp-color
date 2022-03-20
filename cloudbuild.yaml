@@ -44,4 +44,4 @@ steps:
       cd webapp-color-gitops && \
       git add  ./deployment/deployment.yaml && \
       git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-      git push origin master
+      git push
