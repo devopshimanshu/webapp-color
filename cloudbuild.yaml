@@ -1,4 +1,41 @@
+# This step build image and push into container registry
 steps:
 - name: 'gcr.io/cloud-builders/docker'
+  id: Build App Image
   args: ['build', '-t', 'gcr.io/${PROJECT_ID}/${REPO_NAME}:${SHORT_SHA}', "."]
 images: ['gcr.io/${PROJECT_ID}/${REPO_NAME}']
+
+# This step clones the hello-cloudbuild-env repository
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Clone gtops repository
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      gcloud source repos clone webapp-color-gitops && \
+      cd webapp-color-gitops && \
+      git checkout master && \
+      git config user.email $(gcloud auth list --filter=status: ACTIVE --format='value(account)')
+
+#This step generates the new manifest
+- name: 'gcr.io/cloud/builders/gcloud'
+  id: Update Image SHORT_SHA
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" webapp-color-gitops/deployment/deployment.yaml.tpl | \
+      sed "s/COMMIT_SHA/${SHORT_SHA}/g" > webapp-color-gitops/deployment/deployment.yaml
+
+#This step pushes the manifest back to webapp-color-gitops
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Push deployment yaml 
+  entrypoint: /bin/sh
+  args: 
+    - '-c'
+    - |
+      set -x&& \
+      cd webapp-color-gitops && \
+      git add  /deployment/deployment.yaml
+      git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
+      git push origin master
