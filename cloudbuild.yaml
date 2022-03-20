@@ -25,7 +25,7 @@ steps:
       git config user.email "cloud.himanshu2022@gmail.com"
 
 #This step generates the new manifest
-- name: 'gcr.io/cloud/builders/gcloud'
+- name: 'gcr.io/cloud-builders/gcloud'
   id: Update Image SHORT_SHA
   entrypoint: /bin/sh
   args:
