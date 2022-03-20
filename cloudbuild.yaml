@@ -31,8 +31,7 @@ steps:
   args:
     - '-c'
     - |
-      sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" webapp-color-gitops/deployment/deployment.yaml.tpl | \
-      sed "s/COMMIT_SHA/${SHORT_SHA}/g" > webapp-color-gitops/deployment/deployment.yaml
+      sed 's/SHORT_SHA/${SHORT_SHA}/g' webapp-color-gitops/deployment/deployment.yaml.tpl > webapp-color-gitops/deployment/deployment.yaml
 
 #This step pushes the manifest back to webapp-color-gitops
 - name: 'gcr.io/cloud-builders/gcloud'
