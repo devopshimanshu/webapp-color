@@ -31,9 +31,7 @@ steps:
   args:
     - '-c'
     - |
-      pwd
-      ls -larth
-#sed 's/SHORT_SHA/${SHORT_SHA}/g' webapp-color-gitops/deployment/deployment.yaml.tpl > webapp-color-gitops/deployment/deployment.yaml
+      sed 's/SHORT_SHA/${SHORT_SHA}/g' ./webapp-color-gitops/deployment/deployment.yaml.tpl > ./webapp-color-gitops/deployment/deployment.yaml
 
 #This step pushes the manifest back to webapp-color-gitops
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -44,7 +42,6 @@ steps:
     - |
       set -x && \
       cd webapp-color-gitops && \
-      ls &&\
-      git add  /deployment/deployment.yaml && \
+      git add  ./deployment/deployment.yaml && \
       git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
       git push origin master
