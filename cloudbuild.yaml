@@ -12,22 +12,22 @@ steps:
   args:
   - 'push'
   - 'gcr.io/${PROJECT_ID}/${REPO_NAME}:$SHORT_SHA'
-
+availableSecrets:
+  secretManager:
+  - versionName: projects/1062152154421/secrets/github-token-devopshimanshu
+    env: GH_TOKEN 
 # This step clones the hello-cloudbuild-env repository
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Clone gtops repository
   entrypoint: /bin/sh
   args:
-    - '-c'
-    - |
-      git clone https://$${GH_TOKEN}@github.com/devopshimanshu/webapp-color-gitops.git && \
-      cd webapp-color-gitops && \
-      git config user.email "cloud.himanshu2022@gmail.com"
-    secretEnv: ['GH_TOKEN']
-availableSecrets:
-  secretManager:
-  - versionName: projects/1062152154421/secrets/github-token-devopshimanshu
-    env: GH_TOKEN    
+  - '-c'
+  - |
+    git clone https://$${GH_TOKEN}@github.com/devopshimanshu/webapp-color-gitops.git && \
+    cd webapp-color-gitops && \
+    git config user.email "cloud.himanshu2022@gmail.com"
+  secretEnv: ['GH_TOKEN']
+   
 #This step generates the new manifest
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Update Image SHORT_SHA
