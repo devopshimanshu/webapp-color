@@ -22,7 +22,7 @@ steps:
     - |
       git clone https://github.com/devopshimanshu/webapp-color-gitops && \
       cd webapp-color-gitops && \
-      git config user.email $(gcloud auth list --filter=status: ACTIVE --format='value(account)')
+      git config user.email "cloud.himanshu2022@gmail.com"
 
 #This step generates the new manifest
 - name: 'gcr.io/cloud/builders/gcloud'
