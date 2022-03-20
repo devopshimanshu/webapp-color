@@ -20,7 +20,7 @@ steps:
   args:
     - '-c'
     - |
-      gcloud source repos clone webapp-color-gitops && \
+      gcloud source repos clone webapp-color-gitops --${PROJECT_ID}&& \
       cd webapp-color-gitops && \
       git checkout master && \
       git config user.email $(gcloud auth list --filter=status: ACTIVE --format='value(account)')
