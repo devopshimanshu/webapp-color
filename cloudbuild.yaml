@@ -20,9 +20,8 @@ steps:
   args:
     - '-c'
     - |
-      gcloud source repos clone github_devopshimanshu_webapp-color-gitops --project=${PROJECT_ID} && \
+      git clone https://github.com/devopshimanshu/webapp-color-gitops && \
       cd webapp-color-gitops && \
-      git checkout master && \
       git config user.email $(gcloud auth list --filter=status: ACTIVE --format='value(account)')
 
 #This step generates the new manifest
@@ -42,8 +41,8 @@ steps:
   args: 
     - '-c'
     - |
-      set -x&& \
+      set -x && \
       cd webapp-color-gitops && \
-      git add  /deployment/deployment.yaml
+      git add  /deployment/deployment.yaml && \
       git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
       git push origin master
