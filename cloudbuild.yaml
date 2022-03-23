@@ -47,5 +47,5 @@ steps:
       git push origin main
 availableSecrets:
   secretManager:
-  - versionName: projects/155192297176/secrets/github-token-devopshimanshu
+  - versionName: projects/155192297176/secrets/github-token-devopshimanshu/versions/1
     env: GH_TOKEN
