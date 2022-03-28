@@ -28,8 +28,8 @@ steps:
   args:
     - cluster-info
   env:
-    - CLOUDSDK_COMPUTE_REGION=$_CUSTOM_REGION
-    - CLOUDSDK_CONTAINER_CLUSTER=$_CUSTOM_CLUSTER
+    - CLOUDSDK_COMPUTE_REGION="us-central1"
+    - CLOUDSDK_CONTAINER_CLUSTER="helm-demo"
     - KUBECONFIG=/workspace/.kube/config
 # Deploy with Helm
 - name: gcr.io/$PROJECT_ID/helm
