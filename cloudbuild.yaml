@@ -34,8 +34,8 @@ steps:
 # Deploy with Helm
 - name: gcr.io/$PROJECT_ID/helm
   args:
-    - ls && \
-    - pwd
+    - repo add webapp-color git@github.com:devopshimanshu/webapp-color-helm.git && \
+    - install webapp-color 
   env:
     - KUBECONFIG=/workspace/.kube/config
 #This step pushes the manifest back to webapp-color-gitops
