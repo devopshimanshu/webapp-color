@@ -28,7 +28,7 @@ steps:
   args:
     - cluster-info
   env:
-    - CLOUDSDK_COMPUTE_REGION="us-central1"
+    - CLOUDSDK_COMPUTE_REGION="us-central1-c"
     - CLOUDSDK_CONTAINER_CLUSTER="helm-demo"
     - KUBECONFIG=/workspace/.kube/config
 # Deploy with Helm
@@ -39,7 +39,7 @@ steps:
     - webapp-color
     - ./kubernetes
     - --set
-    - image.repository=gcr.io/$PROJECT_ID/webapp-color,image.tag=$COMMIT_SHA
+    - image.repository=gcr.io/$PROJECT_ID/webapp-color,image.tag=$SHORT_SHA
     - -f
     - ./kubernetes/values.yaml
   env:
