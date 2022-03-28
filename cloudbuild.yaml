@@ -23,27 +23,27 @@ steps:
     cd webapp-color-helm && \
     git config user.email "cloud.himanshu2022@gmail.com"
   secretEnv: ['GH_TOKEN']
-# Configure a kubectl workspace for this project
-- name: gcr.io/cloud-builders/kubectl
-  args:
-    - cluster-info
-  env:
-    - CLOUDSDK_COMPUTE_ZONE=us-central1-c
-    - CLOUDSDK_CONTAINER_CLUSTER=helm-demo
-    - KUBECONFIG=/workspace/.kube/config
-# Deploy with Helm
-- name: gcr.io/$PROJECT_ID/helm
-  args:
-    - upgrade
-    - -i
-    - webapp-color
-    - ./webapp-color-helm
-    - --set
-    - image.repository=gcr.io/$PROJECT_ID/webapp-color,image.tag=$SHORT_SHA
-    - -f
-    - ./webapp-color-helm/values.yaml 
-  env:
-    - KUBECONFIG=/workspace/.kube/config
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Update tag-values.yaml
+  entrypoint: /bin/sh
+   args:
+    - '-c'
+    - |
+      cd webapp-color-helm && \
+      rm tag-values.yaml && \
+      echo 'image.tag: $SHORT_SHA' > tag-values.yaml
+#This step pushes the manifest back to webapp-color-gitops
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Push tag values yaml
+  entrypoint: /bin/sh
+  args: 
+    - '-c'
+    - |
+      set -x && \
+      cd webapp-color-helm && \
+      git add  ./tag-values.yaml && \
+      git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
+      git push origin main
 availableSecrets:
   secretManager:
   - versionName: projects/155192297176/secrets/github-token-devopshimanshu/versions/1
