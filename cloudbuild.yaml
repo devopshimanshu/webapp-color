@@ -20,7 +20,7 @@ steps:
   - '-c'
   - |
     git clone https://$${GH_TOKEN}@github.com/devopshimanshu/webapp-color-helm.git && \
-    cd webapp-color-gitops && \
+    cd webapp-color-helm && \
     git config user.email "cloud.himanshu2022@gmail.com"
   secretEnv: ['GH_TOKEN']
 # Configure a kubectl workspace for this project
