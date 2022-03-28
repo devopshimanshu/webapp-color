@@ -44,18 +44,6 @@ steps:
     - ./webapp-color-helm/values.yaml 
   env:
     - KUBECONFIG=/workspace/.kube/config
-#This step pushes the manifest back to webapp-color-gitops
-- name: 'gcr.io/cloud-builders/gcloud'
-  id: Push deployment yaml 
-  entrypoint: /bin/sh
-  args: 
-    - '-c'
-    - |
-      set -x && \
-      cd webapp-color-gitops && \
-      git add  ./deployment/deployment.yaml && \
-      git commit -m "Deploying image us-central1-docker.pkg.dev/$PROJECT_ID/webapp-color-gitops/webapp-color:${SHORT_SHA}. Built from commit ${COMMIT_SHA} of repository webapp-color. Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-      git push origin main
 availableSecrets:
   secretManager:
   - versionName: projects/155192297176/secrets/github-token-devopshimanshu/versions/1
