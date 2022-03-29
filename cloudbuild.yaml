@@ -29,7 +29,7 @@ steps:
   - '-c'
   - |
     cd webapp-color-helm && \
-    echo 'image.tag: $SHORT_SHA' > tag-values.yaml
+    echo 'imagetag: $SHORT_SHA' > tag-values.yaml
 #This step pushes the manifest back to webapp-color-gitops
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Push tag values yaml
